@@ -2,7 +2,7 @@ import React from 'react';
 
 import PureCanvas from './PureCanvas';
 
-class GameCanvas extends React.Component {
+class BackgroundCanvas extends React.Component {
   saveContext = ctx => {
     this._ctx = ctx;
   };
@@ -20,8 +20,8 @@ class GameCanvas extends React.Component {
   }
 
   render() {
-    return <PureCanvas contextRef={this.saveContext} />;
+    return <PureCanvas contextRef={this.saveContext} id={'bg-canvas'}/>;
   }
 }
 
-export default GameCanvas;
+export default BackgroundCanvas;
