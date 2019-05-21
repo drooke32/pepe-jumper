@@ -4,12 +4,10 @@ import '../css/App.css';
 import GameCanvas from './Layers/GameCanvas';
 import BackgroundCanvas from './Layers/BackgroundCanvas';
 import {
-  MAX_FALL_SPEED,
-  MAX_THRUST, MAX_VELOCITY,
   PLAYER_STARTING,
   SPACEBAR_KEYCODE,
-  VELOCITY,
 } from './helpers/constants';
+import { movePlayer } from './helpers/playerMovement';
 
 class Game extends React.Component {
   constructor(props) {
@@ -61,35 +59,7 @@ class Game extends React.Component {
   }
 
   calculateNewPosition() {
-    let thrust = this.state.thrust;
-    let velocity = this.state.velocity;
-    let position = this.state.position;
-
-    if (this.state.jumping) {
-      thrust = (this.state.thrust + 0.25) > MAX_THRUST ? MAX_THRUST : this.state.thrust + 0.25;
-      velocity = this.state.velocity - (VELOCITY + thrust);
-      if (velocity < -(MAX_VELOCITY)) {
-        velocity = -MAX_VELOCITY
-      }
-      position = this.state.position + (velocity);
-    } else {
-      thrust = 0;
-      velocity = this.state.velocity + VELOCITY;
-      if (velocity > MAX_FALL_SPEED) {
-        velocity = MAX_FALL_SPEED;
-      }
-      position = this.state.position + velocity;
-    }
-
-    if (position <= 0) {
-      return {position: 0, velocity: 0, thrust};
-    }
-
-    if (position >= PLAYER_STARTING.vertical) {
-      return { position: PLAYER_STARTING.vertical, velocity: 0, thrust };
-    }
-
-    return { position, velocity, thrust };
+    return movePlayer(this.state);
   }
 
   getPlayerPosition() {
