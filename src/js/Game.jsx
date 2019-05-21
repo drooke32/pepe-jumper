@@ -2,8 +2,14 @@ import React from 'react';
 
 import '../css/App.css';
 import GameCanvas from './Layers/GameCanvas';
-import { PLAYER_STARTING, SPACEBAR_KEYCODE } from './helpers/constants';
 import BackgroundCanvas from './Layers/BackgroundCanvas';
+import {
+  MAX_FALL_SPEED,
+  MAX_THRUST, MAX_VELOCITY,
+  PLAYER_STARTING,
+  SPACEBAR_KEYCODE,
+  VELOCITY,
+} from './helpers/constants';
 
 class Game extends React.Component {
   constructor(props) {
@@ -12,6 +18,8 @@ class Game extends React.Component {
     this.state = {
       position: PLAYER_STARTING.vertical,
       jumping: false,
+      velocity: 0,
+      thrust: 0,
     };
 
     this.jumpBruh = this.jumpBruh.bind(this);
@@ -48,23 +56,40 @@ class Game extends React.Component {
   };
 
   updatePlayer() {
-    this.setState({ position: this.calculateNewPosition() });
+    this.setState(this.calculateNewPosition());
     this.animationFrame = requestAnimationFrame(this.updatePlayer);
   }
 
   calculateNewPosition() {
-    let newPosition = this.state.position + 10;
+    let thrust = this.state.thrust;
+    let velocity = this.state.velocity;
+    let position = this.state.position;
+
     if (this.state.jumping) {
-      newPosition = this.state.position - 15;
+      thrust = (this.state.thrust + 0.25) > MAX_THRUST ? MAX_THRUST : this.state.thrust + 0.25;
+      velocity = this.state.velocity - (VELOCITY + thrust);
+      if (velocity < -(MAX_VELOCITY)) {
+        velocity = -MAX_VELOCITY
+      }
+      position = this.state.position + (velocity);
+    } else {
+      thrust = 0;
+      velocity = this.state.velocity + VELOCITY;
+      if (velocity > MAX_FALL_SPEED) {
+        velocity = MAX_FALL_SPEED;
+      }
+      position = this.state.position + velocity;
     }
 
-    if (newPosition <= 0) {
-      return 0;
+    if (position <= 0) {
+      return {position: 0, velocity: 0, thrust};
     }
-    if (newPosition >= PLAYER_STARTING.vertical) {
-      return PLAYER_STARTING.vertical;
+
+    if (position >= PLAYER_STARTING.vertical) {
+      return { position: PLAYER_STARTING.vertical, velocity: 0, thrust };
     }
-    return newPosition;
+
+    return { position, velocity, thrust };
   }
 
   getPlayerPosition() {
