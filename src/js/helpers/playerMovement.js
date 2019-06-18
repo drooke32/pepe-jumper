@@ -22,11 +22,11 @@ export const movePlayer = ({position, velocity, thrust, jumping}) => {
   }
 
   if (newPosition <= 0) {
-    return { position: 0, velocity: 0, newThrust };
+    return { position: 0, velocity: 0, thrust };
   }
 
   if (newPosition >= PLAYER_STARTING.vertical) {
-    return { position: PLAYER_STARTING.vertical, velocity: 0, newThrust };
+    return { position: PLAYER_STARTING.vertical, velocity: 0, thrust };
   }
 
   return { position: newPosition, velocity: newVelocity, thrust: newThrust };

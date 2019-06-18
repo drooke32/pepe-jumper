@@ -4,8 +4,8 @@ export const PLAYER_DIMENSIONS = {
 };
 
 export const PLAYER_STARTING = {
-  vertical: 500,
-  horizontal: 400,
+  vertical: 510,
+  horizontal: 250,
 };
 
 export const SPACEBAR_KEYCODE = 32;
@@ -14,3 +14,5 @@ export const VELOCITY = 2;
 export const MAX_THRUST = 2;
 export const MAX_VELOCITY = 15;
 export const MAX_FALL_SPEED = 25;
+
+export const SCROLL_SPEED = 4;

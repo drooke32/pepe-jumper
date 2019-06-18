@@ -18,6 +18,8 @@ class Game extends React.Component {
       jumping: false,
       velocity: 0,
       thrust: 0,
+      time: 0,
+      start: Date.now(),
     };
 
     this.jumpBruh = this.jumpBruh.bind(this);
@@ -54,12 +56,10 @@ class Game extends React.Component {
   };
 
   updatePlayer() {
-    this.setState(this.calculateNewPosition());
+    const { position, velocity, thrust } = movePlayer(this.state);
+    const time = Math.floor((Date.now() - this.state.start) / 1000); //Magic number :D
+    this.setState({ position, velocity, thrust, time });
     this.animationFrame = requestAnimationFrame(this.updatePlayer);
-  }
-
-  calculateNewPosition() {
-    return movePlayer(this.state);
   }
 
   getPlayerPosition() {
@@ -69,7 +69,7 @@ class Game extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <BackgroundCanvas />
+        <BackgroundCanvas scrollMod={1}/>
         <GameCanvas playerPosition={this.getPlayerPosition()} />
       </React.Fragment>
     );

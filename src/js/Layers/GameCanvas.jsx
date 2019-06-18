@@ -29,7 +29,6 @@ class GameCanvas extends React.Component {
     this.ctx.fillStyle = '#2980B9';
     this.ctx.fill(player);
     this.ctx.restore();
-
   }
 
   render() {
